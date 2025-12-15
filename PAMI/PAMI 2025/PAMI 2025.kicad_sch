@@ -3388,16 +3388,6 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 121.92) (xy 81.28 123.19)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7e914f4f-3476-4550-b55c-fa8a82bdb008")
-	)
-	(wire
-		(pts
 			(xy 102.87 88.9) (xy 106.68 88.9)
 		)
 		(stroke
@@ -3475,6 +3465,16 @@
 			(type default)
 		)
 		(uuid "b2fee579-b899-41d2-a2fa-e744835e0d39")
+	)
+	(wire
+		(pts
+			(xy 81.28 121.92) (xy 81.28 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3d41295-4c1b-4f9d-9bcc-cc4c2c5e1aaa")
 	)
 	(wire
 		(pts
@@ -5161,7 +5161,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d724f42c-6f79-4337-91ff-e638b906d50c")
-		(property "Reference" "tirette-"
+		(property "Reference" "tirette-1"
 			(at 98.298 106.426 0)
 			(effects
 				(font
@@ -5227,7 +5227,7 @@
 		(instances
 			(project ""
 				(path "/9d7115ee-b553-46e9-9d14-4cd62ff89a57"
-					(reference "tirette-")
+					(reference "tirette-1")
 					(unit 1)
 				)
 			)
@@ -5309,7 +5309,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f1a52465-c4be-45f2-b095-abe6014f1fec")
-		(property "Reference" "blue/yellow"
+		(property "Reference" "blue/yellow1"
 			(at 97.536 86.106 0)
 			(effects
 				(font
@@ -5365,7 +5365,7 @@
 		(instances
 			(project ""
 				(path "/9d7115ee-b553-46e9-9d14-4cd62ff89a57"
-					(reference "blue/yellow")
+					(reference "blue/yellow1")
 					(unit 1)
 				)
 			)
