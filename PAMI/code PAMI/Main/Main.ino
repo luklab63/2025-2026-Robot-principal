@@ -3,38 +3,30 @@
 #define wheel2_1 10
 #define wheel2_2 9
 
-#define LED_R = 7
-#define LED_G = 8
-#define LED_B = 13
+#define LED_R  7
+#define LED_G  8
+#define LED_B  13
 
+int pins[]={6,5,10,9,7,8,12};
+
+#define color_switch 11
 #define tirette 4
-int tirette_etat = LOW 
 
-void wait_before(){
-  
-  while(tirette_etat){
-    tirette_etat = digitalread(tirette);
-  }
-}
+#define time_wait 8500
+int tirette_etat = LOW ;
+int time_go = 0;
 
-void wait_go(){
 
-}
 
 void setup() {
-  pinMode(wheel1_1, OUTPUT);
-  pinMode(wheel1_2, OUTPUT);
-  pinMode(wheel2_1, OUTPUT);
-  pinMode(wheel2_2, OUTPUT);
+  for (int i = 0; i<7; i++){ 
+    digitalWrite(pins[i],OUTPUT); 
+  }
   pinMode(tirette, INPUT);
-  Pinmode(LED_R, OUTPUT);
-  Pinmode(LED_G, OUTPUT);
-  Pinmode(LED_B, OUTPUT);
+  pinMode(color_switch, INPUT);
 
   wait_before();
   wait_go();
-
-
 }
 
 void loop() {
