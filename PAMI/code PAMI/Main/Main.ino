@@ -20,20 +20,25 @@ int time_go = 0;
 
 
 void setup() {
+  Serial.begin(9600);
+
   for (int i = 0; i<7; i++){ 
-    digitalWrite(pins[i],OUTPUT); 
+    pinMode(pins[i],OUTPUT); 
   }
   pinMode(tirette, INPUT);
   pinMode(blue_switch, INPUT);
   pinMode(yellow_switch, INPUT);
 
   wait_before();
+  Serial.println(time_go);
   wait_go();
 }
 
 void loop() {
-  digitalWrite(wheel1_1,LOW);
-  digitalWrite(wheel2_1,HIGH);
-  digitalWrite(wheel1_2,HIGH);
-  digitalWrite(wheel2_2,LOW);
+  if (digitalRead(yellow_switch)) {
+    forward_move();
+  }
+  else {
+    stop_move();
+  }
 }
