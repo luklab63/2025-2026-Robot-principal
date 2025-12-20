@@ -14,7 +14,7 @@ int pins[]={6,5,10,9,7,8,12};
 #define tirette 4
 
 #define time_wait 8500
-int tirette_etat = LOW ;
+int tirette_etat = HIGH ;
 int time_go = 0;
 
 
