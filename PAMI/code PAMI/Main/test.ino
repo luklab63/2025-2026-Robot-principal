@@ -1,4 +1,3 @@
-
 void wait_before(){
   digitalWrite(LED_R, HIGH);
   while(tirette_etat== HIGH){
@@ -10,20 +9,23 @@ void wait_before(){
 }
 
 void wait_go(){
-  while(digitalRead(tirette) == LOW || millis()-time_go<time_wait  ){
-    if(digitalRead(yellow_switch)){
-      digitalWrite(LED_G,HIGH);
-      digitalWrite(LED_B, LOW);
-    }
-    else {
-      digitalWrite(LED_B, HIGH);
-      digitalWrite(LED_G, LOW);
-    }
+  while(millis()-time_go<100  ){
+    while(digitalRead(tirette) == LOW && millis()-time_go<time_wait  ){
       
+      if(digitalRead(yellow_switch)){
+        digitalWrite(LED_G,HIGH);
+        digitalWrite(LED_B, LOW);
+      }
+      else {
+        digitalWrite(LED_B, HIGH);
+        digitalWrite(LED_G, LOW);
+      }
+        
+    }
+    digitalWrite(LED_B, LOW);
+    digitalWrite(LED_G, LOW);
+    digitalWrite(LED_R, HIGH);
   }
-  digitalWrite(LED_B, LOW);
-  digitalWrite(LED_G, LOW);
-  digitalWrite(LED_R, HIGH);
 }
 
 void forward_move(){

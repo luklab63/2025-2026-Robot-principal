@@ -13,7 +13,7 @@ int pins[]={6,5,10,9,7,8,12};
 #define yellow_switch 3
 #define tirette 4
 
-#define time_wait 8500
+#define time_wait 85000
 int tirette_etat = HIGH ;
 int time_go = 0;
 
