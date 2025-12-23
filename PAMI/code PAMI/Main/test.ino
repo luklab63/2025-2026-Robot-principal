@@ -32,14 +32,14 @@ void wait_go(){
 }
 
 void forward_move(){
-  get_gyro();
-  if (GyZ>300){
+  get_angle();
+  if (angle>100){
     analogWrite(wheel1_1,255);
     digitalWrite(wheel1_2,LOW);
     analogWrite(wheel2_2,122);
     digitalWrite(wheel2_1,LOW);
   }
-  else if (GyZ<300) {
+  else if (angle<100) {
     analogWrite(wheel1_1,122);
     digitalWrite(wheel1_2,LOW);
     analogWrite(wheel2_2,255);
@@ -88,4 +88,19 @@ void get_gyro(){
   //Serial.print(" | AcZ = "); Serial.println(AcZ);
   Serial.println();
 
+}
+
+void get_angle() {
+  get_gyro();
+  if (GyZ<600 && GyZ>100){
+    angle = angle;
+  }
+  else if (GyZ>600) {
+    angle= angle + GyZ -600;
+  }
+  else if (GyZ<100) {
+    angle =angle + GyZ -100;
+  }
+  Serial.println(angle);
+  delay(100);
 }

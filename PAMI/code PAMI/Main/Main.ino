@@ -5,8 +5,8 @@
 #include <Wire.h>
 
 #define MPU_addr 0x68  // I2C address of the MPU-6050
-
 int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
+int angle = 0;
 
 #define wheel1_1 6
 #define wheel1_2 5
@@ -56,5 +56,4 @@ void loop() {
     stop_move();
   }
 
- 
 }
