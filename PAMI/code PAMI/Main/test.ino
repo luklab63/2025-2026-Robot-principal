@@ -1,3 +1,6 @@
+
+
+
 void wait_before(){
   digitalWrite(LED_R, HIGH);
   while(tirette_etat== HIGH){
@@ -29,10 +32,19 @@ void wait_go(){
 }
 
 void forward_move(){
-    digitalWrite(wheel1_1,HIGH);
-    digitalWrite(wheel2_1,LOW);
+  get_gyro();
+  if (GyZ>300){
+    analogWrite(wheel1_1,255);
     digitalWrite(wheel1_2,LOW);
-    digitalWrite(wheel2_2,HIGH);
+    analogWrite(wheel2_2,122);
+    digitalWrite(wheel2_1,LOW);
+  }
+  else if (GyZ<300) {
+    analogWrite(wheel1_1,122);
+    digitalWrite(wheel1_2,LOW);
+    analogWrite(wheel2_2,255);
+    digitalWrite(wheel2_1,LOW);
+  }
 }
 
 void stop_move(){
@@ -47,4 +59,33 @@ void backward_move(){
     digitalWrite(wheel2_1,HIGH);
     digitalWrite(wheel1_2,HIGH);
     digitalWrite(wheel2_2,LOW);  
+}
+
+void MPU_init(){
+  Wire.begin();
+
+  Wire.beginTransmission(MPU_addr);
+
+  Wire.write(0x6B);  // PWR_MGMT_1 register
+  Wire.write(0);     // set to zero (wakes up the MPU-6050)
+
+  Wire.endTransmission(true);
+}
+
+void get_gyro(){
+  Wire.beginTransmission(MPU_addr);
+
+  Wire.write(0x47);  // starting with register 0x3B (ACCEL_XOUT_H)
+
+  Wire.endTransmission(false);
+
+  Wire.requestFrom(MPU_addr, 14, true);  // request a total of 14 registers
+
+  GyZ = Wire.read() << 8 | Wire.read();  // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
+  //AcZ = Wire.read() << 8 | Wire.read();  // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
+
+  Serial.print(" | GyZ = "); Serial.println(GyZ);
+  //Serial.print(" | AcZ = "); Serial.println(AcZ);
+  Serial.println();
+
 }

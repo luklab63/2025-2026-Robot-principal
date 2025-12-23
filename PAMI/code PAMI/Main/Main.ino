@@ -1,3 +1,13 @@
+// code pami pimment robotique 2025-2026
+// luklab63 on github
+
+
+#include <Wire.h>
+
+#define MPU_addr 0x68  // I2C address of the MPU-6050
+
+int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
+
 #define wheel1_1 6
 #define wheel1_2 5
 #define wheel2_1 10
@@ -19,8 +29,11 @@ int time_go = 0;
 
 
 
+
+
 void setup() {
   Serial.begin(9600);
+  MPU_init();
 
   for (int i = 0; i<7; i++){ 
     pinMode(pins[i],OUTPUT); 
@@ -35,10 +48,13 @@ void setup() {
 }
 
 void loop() {
+
   if (digitalRead(yellow_switch)) {
     forward_move();
   }
   else {
     stop_move();
   }
+
+ 
 }
