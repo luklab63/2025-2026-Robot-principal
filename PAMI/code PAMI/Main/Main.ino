@@ -3,6 +3,8 @@
 
 
 #include <Wire.h>
+#include <Servo.h>
+Servo myservo;
 
 #define MPU_addr 0x68  // I2C address of the MPU-6050
 int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
@@ -16,6 +18,7 @@ int angle = 0;
 #define LED_G  7
 #define LED_B  8
 #define LED_R  12
+#define SERVO  11
 
 int pins[]={6,5,10,9,7,8,12};
 

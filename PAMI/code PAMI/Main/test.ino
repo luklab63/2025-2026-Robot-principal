@@ -115,6 +115,8 @@ void get_angle() {
 }
 
 void ARU_STOP(){
+  myservo.write(90);
+
   digitalWrite(LED_B, HIGH);
   delay(100);
   digitalWrite(LED_G, HIGH);
@@ -122,12 +124,20 @@ void ARU_STOP(){
   digitalWrite(LED_R, HIGH);
   delay(100);
 
+  myservo.write(30);
+  delay(300);
+  myservo.write(90);
+
   digitalWrite(LED_B, LOW);
   delay(100);
   digitalWrite(LED_G, LOW);
   delay(100);
   digitalWrite(LED_R, LOW);
   delay(100);
+
+  myservo.write(150);
+  delay(300)
+
 }
 
 void init_ALL(){
@@ -140,6 +150,18 @@ void init_ALL(){
   pinMode(blue_switch, INPUT);
   pinMode(yellow_switch, INPUT);
   pinMode(ARU, INPUT);
-
+  myservo.attach(SERVO);
+  myservo.write(90);
   MPU_init();
+}
+
+void servo(){
+  myservo.write(90);// move servos to center position -> 90°
+  delay(500);
+  myservo.write(30);// move servos to center position -> 60°
+  delay(500);
+  myservo.write(90);// move servos to center position -> 90°
+  delay(500);
+  myservo.write(150);// move servos to center position -> 120°
+  delay(500);
 }
