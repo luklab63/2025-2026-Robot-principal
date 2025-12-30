@@ -22,6 +22,7 @@ int pins[]={6,5,10,9,7,8,12};
 #define blue_switch 2
 #define yellow_switch 3
 #define tirette 4
+#define ARU 13
 
 #define time_wait 85000
 int tirette_etat = HIGH ;
@@ -32,28 +33,24 @@ int time_go = 0;
 
 
 void setup() {
-  Serial.begin(9600);
-  MPU_init();
-
-  for (int i = 0; i<7; i++){ 
-    pinMode(pins[i],OUTPUT); 
-  }
-  pinMode(tirette, INPUT);
-  pinMode(blue_switch, INPUT);
-  pinMode(yellow_switch, INPUT);
-
+  init_ALL();
+  ARU_ON();
   wait_before();
   Serial.println(time_go);
   wait_go();
+
+  while (digitalRead(ARU)==LOW) {
+    if (digitalRead(yellow_switch)) {
+      forward_move();
+    }
+    else {
+      stop_move();
+    }
+  }
+  
 }
 
 void loop() {
-
-  if (digitalRead(yellow_switch)) {
-    forward_move();
-  }
-  else {
-    stop_move();
-  }
-
+  stop_move();
+  ARU_STOP();
 }

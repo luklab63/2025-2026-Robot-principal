@@ -1,5 +1,14 @@
 
 
+void ARU_ON(){
+  
+  while (digitalRead(ARU)) {
+    digitalWrite(LED_R, HIGH);
+    delay(100);
+    digitalWrite(LED_R, LOW);
+    delay(100);
+  }
+}
 
 void wait_before(){
   digitalWrite(LED_R, HIGH);
@@ -33,13 +42,13 @@ void wait_go(){
 
 void forward_move(){
   get_angle();
-  if (angle>100){
+  if (angle>50){
     analogWrite(wheel1_1,255);
     digitalWrite(wheel1_2,LOW);
     analogWrite(wheel2_2,122);
     digitalWrite(wheel2_1,LOW);
   }
-  else if (angle<100) {
+  else if (angle<50) {
     analogWrite(wheel1_1,122);
     digitalWrite(wheel1_2,LOW);
     analogWrite(wheel2_2,255);
@@ -92,15 +101,45 @@ void get_gyro(){
 
 void get_angle() {
   get_gyro();
-  if (GyZ<600 && GyZ>100){
+  if (GyZ<550 && GyZ>150){
     angle = angle;
   }
-  else if (GyZ>600) {
-    angle= angle + GyZ -600;
+  else if (GyZ>550) {
+    angle= angle + GyZ -550;
   }
-  else if (GyZ<100) {
-    angle =angle + GyZ -100;
+  else if (GyZ<150) {
+    angle =angle + GyZ -150;
   }
   Serial.println(angle);
   delay(100);
+}
+
+void ARU_STOP(){
+  digitalWrite(LED_B, HIGH);
+  delay(100);
+  digitalWrite(LED_G, HIGH);
+  delay(100);
+  digitalWrite(LED_R, HIGH);
+  delay(100);
+
+  digitalWrite(LED_B, LOW);
+  delay(100);
+  digitalWrite(LED_G, LOW);
+  delay(100);
+  digitalWrite(LED_R, LOW);
+  delay(100);
+}
+
+void init_ALL(){
+  Serial.begin(9600);
+
+  for (int i = 0; i<7; i++){ 
+    pinMode(pins[i],OUTPUT); 
+  }
+  pinMode(tirette, INPUT);
+  pinMode(blue_switch, INPUT);
+  pinMode(yellow_switch, INPUT);
+  pinMode(ARU, INPUT);
+
+  MPU_init();
 }
