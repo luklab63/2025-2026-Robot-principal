@@ -42,7 +42,9 @@ void setup() {
   Serial.println(time_go);
   wait_go();
 
-  while (digitalRead(ARU)==LOW) {
+  time_go = millis();
+
+  while (digitalRead(ARU)==LOW && millis()-time_go < 10000) {
     if (digitalRead(yellow_switch)) {
       forward_move();
     }
@@ -55,5 +57,11 @@ void setup() {
 
 void loop() {
   stop_move();
-  ARU_STOP();
+  servo();
+  digitalWrite(LED_G, HIGH);
+  while (digitalRead(ARU)) {
+    ARU_STOP();
+  }
+
+
 }

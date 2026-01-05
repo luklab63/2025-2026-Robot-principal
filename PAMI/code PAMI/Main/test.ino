@@ -115,6 +115,41 @@ void get_angle() {
 }
 
 void ARU_STOP(){
+  digitalWrite(LED_G, LOW);
+  myservo.write(30);
+  digitalWrite(LED_R,HIGH);
+  delay(300);
+
+  myservo.write(90);
+  digitalWrite(LED_R,LOW);
+  delay(300);
+
+  myservo.write(150);
+  digitalWrite(LED_R,HIGH);
+  delay(300);
+
+  myservo.write(90);
+  digitalWrite(LED_R,LOW);
+  delay(300);
+
+}
+
+void init_ALL(){
+  Serial.begin(9600);
+
+  for (int i = 0; i<7; i++){ 
+    pinMode(pins[i],OUTPUT); 
+  }
+  pinMode(tirette, INPUT);
+  pinMode(blue_switch, INPUT);
+  pinMode(yellow_switch, INPUT);
+  pinMode(ARU, INPUT);
+  myservo.attach(SERVO);
+  myservo.write(90);
+  MPU_init();
+}
+
+void servo(){
   myservo.write(90);
 
   digitalWrite(LED_B, HIGH);
@@ -136,32 +171,6 @@ void ARU_STOP(){
   delay(100);
 
   myservo.write(150);
-  delay(300)
+  delay(300);
 
-}
-
-void init_ALL(){
-  Serial.begin(9600);
-
-  for (int i = 0; i<7; i++){ 
-    pinMode(pins[i],OUTPUT); 
-  }
-  pinMode(tirette, INPUT);
-  pinMode(blue_switch, INPUT);
-  pinMode(yellow_switch, INPUT);
-  pinMode(ARU, INPUT);
-  myservo.attach(SERVO);
-  myservo.write(90);
-  MPU_init();
-}
-
-void servo(){
-  myservo.write(90);// move servos to center position -> 90°
-  delay(500);
-  myservo.write(30);// move servos to center position -> 60°
-  delay(500);
-  myservo.write(90);// move servos to center position -> 90°
-  delay(500);
-  myservo.write(150);// move servos to center position -> 120°
-  delay(500);
 }
