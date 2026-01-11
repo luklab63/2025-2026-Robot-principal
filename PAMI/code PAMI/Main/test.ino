@@ -11,11 +11,20 @@ void ARU_ON(){
 }
 
 void wait_before(){
-  digitalWrite(LED_R, HIGH);
   while(tirette_etat== HIGH){
+    if (digitalRead(yellow_switch)) {
+      digitalWrite(LED_G, HIGH);
+      digitalWrite(LED_B, LOW);
+    }
+    else if (digitalRead(blue_switch)) {
+      digitalWrite(LED_B, HIGH);
+      digitalWrite(LED_G, LOW);
+    }
+
     tirette_etat = digitalRead(tirette);
   }
-  digitalWrite(LED_R, LOW);
+  digitalWrite(LED_B, LOW);
+  digitalWrite(LED_G, LOW);
   time_go = millis();
 
 }
@@ -23,16 +32,37 @@ void wait_before(){
 void wait_go(){
   while(millis()-time_go<100  ){
     while(digitalRead(tirette) == LOW && millis()-time_go<time_wait  ){
-      
-      if(digitalRead(yellow_switch)){
-        digitalWrite(LED_G,HIGH);
-        digitalWrite(LED_B, LOW);
+
+      blink = millis();
+      if (digitalRead(yellow_switch)) {
+        if (millis()-blink > 1000) {
+          if (blink_count == 0) {
+            digitalWrite(LED_G, HIGH);
+            blink_count = 1;
+          }
+          else if (blink_count == 0) {
+            digitalWrite(LED_G, LOW);
+            blink_count = 0;
+          }
+          blink =millis();
+        }
       }
-      else {
-        digitalWrite(LED_B, HIGH);
-        digitalWrite(LED_G, LOW);
+
+
+      else if (digitalRead(blue_switch)) {
+        if (millis()-blink > 1000) {
+          if (blink_count == 0) {
+            digitalWrite(LED_B, HIGH);
+            blink_count = 1;
+          }
+          else if (blink_count == 0) {
+            digitalWrite(LED_B, LOW);
+            blink_count = 0;
+          }
+          blink = millis();
+        }
       }
-        
+  }
     }
     digitalWrite(LED_B, LOW);
     digitalWrite(LED_G, LOW);
@@ -41,6 +71,7 @@ void wait_go(){
 }
 
 void forward_move(){
+  
   get_angle();
   if (angle>50){
     analogWrite(wheel1_1,255);
@@ -57,17 +88,17 @@ void forward_move(){
 }
 
 void stop_move(){
-    digitalWrite(wheel1_1,LOW);
-    digitalWrite(wheel2_1,LOW);
-    digitalWrite(wheel1_2,LOW);
-    digitalWrite(wheel2_2,LOW);
+  digitalWrite(wheel1_1,LOW);
+  digitalWrite(wheel2_1,LOW);
+  digitalWrite(wheel1_2,LOW);
+  digitalWrite(wheel2_2,LOW);
 }
 
 void backward_move(){
-    digitalWrite(wheel1_1,LOW);
-    digitalWrite(wheel2_1,HIGH);
-    digitalWrite(wheel1_2,HIGH);
-    digitalWrite(wheel2_2,LOW);  
+  digitalWrite(wheel1_1,LOW);
+  digitalWrite(wheel2_1,HIGH);
+  digitalWrite(wheel1_2,HIGH);
+  digitalWrite(wheel2_2,LOW);  
 }
 
 void MPU_init(){

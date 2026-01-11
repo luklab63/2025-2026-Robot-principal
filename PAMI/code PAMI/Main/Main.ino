@@ -30,10 +30,8 @@ int pins[]={6,5,10,9,7,8,12};
 #define time_wait 85000
 int tirette_etat = HIGH ;
 int time_go = 0;
-
-
-
-
+int blink = 0;
+int blink_count =0;
 
 void setup() {
   init_ALL();
@@ -43,7 +41,7 @@ void setup() {
   wait_go();
 
   time_go = millis();
-
+  angle = 0;
   while (digitalRead(ARU)==LOW && millis()-time_go < 10000) {
     if (digitalRead(yellow_switch)) {
       forward_move();
