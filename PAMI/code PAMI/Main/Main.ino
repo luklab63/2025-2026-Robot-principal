@@ -1,10 +1,9 @@
 // code pami pimment robotique 2025-2026
 // luklab63 on github
 
+#include "test.hpp"
 
 #include <Wire.h>
-#include <Servo.h>
-Servo myservo;
 
 #define MPU_addr 0x68  // I2C address of the MPU-6050
 int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
@@ -15,12 +14,18 @@ int angle = 0;
 #define wheel2_1 10
 #define wheel2_2 9
 
+#define fast_speed 255 // si c pas 255 ca ne marche pas 
+#define slow_speed 122 // la sa ne chage rien si on change la vitesse
+
 #define LED_G  7
 #define LED_B  8
 #define LED_R  12
-#define SERVO  11
 
-int pins[]={6,5,10,9,7,8,12};
+#define SERVO_PIN 11
+#define MIN_PULSE 500   // en microsecondes (1 ms)
+#define MAX_PULSE 2500  // en microsecondes (2 ms)
+
+int pins[]={7,8,12};
 
 #define blue_switch 2
 #define yellow_switch 3
@@ -34,15 +39,22 @@ int blink = 0;
 int blink_count =0;
 
 void setup() {
+  
+  Serial.begin(9600);
+
   init_ALL();
+  
   ARU_ON();
   wait_before();
   Serial.println(time_go);
-  wait_go();
+  //wait_go();               //   /!\ ne pas oublier de uncomment quand pas besoin de test
 
   time_go = millis();
+  Serial.println(time_go);
   angle = 0;
-  while (digitalRead(ARU)==LOW && millis()-time_go < 10000) {
+
+  
+  while (digitalRead(ARU)==LOW && millis()-time_go < 100000) {
     if (digitalRead(yellow_switch)) {
       forward_move();
     }
@@ -50,16 +62,12 @@ void setup() {
       stop_move();
     }
   }
-  
 }
 
 void loop() {
   stop_move();
   servo();
-  digitalWrite(LED_G, HIGH);
   while (digitalRead(ARU)) {
     ARU_STOP();
   }
-
-
 }

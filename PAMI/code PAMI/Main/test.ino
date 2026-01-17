@@ -1,7 +1,4 @@
-
-
 void ARU_ON(){
-  
   while (digitalRead(ARU)) {
     digitalWrite(LED_R, HIGH);
     delay(100);
@@ -26,79 +23,69 @@ void wait_before(){
   digitalWrite(LED_B, LOW);
   digitalWrite(LED_G, LOW);
   time_go = millis();
-
 }
 
 void wait_go(){
+  blink = millis();
   while(millis()-time_go<100  ){
-    while(digitalRead(tirette) == LOW && millis()-time_go<time_wait  ){
+    while(digitalRead(tirette) == LOW && millis()-time_go < time_wait){
 
-      blink = millis();
       if (digitalRead(yellow_switch)) {
-        if (millis()-blink > 1000) {
-          if (blink_count == 0) {
-            digitalWrite(LED_G, HIGH);
-            blink_count = 1;
-          }
-          else if (blink_count == 0) {
-            digitalWrite(LED_G, LOW);
-            blink_count = 0;
-          }
-          blink =millis();
-        }
-      }
 
+        delay(1000);
+        digitalWrite(LED_G, HIGH);
+        delay(1000);
+        digitalWrite(LED_G, LOW);
+        
+      }
 
       else if (digitalRead(blue_switch)) {
-        if (millis()-blink > 1000) {
-          if (blink_count == 0) {
-            digitalWrite(LED_B, HIGH);
-            blink_count = 1;
-          }
-          else if (blink_count == 0) {
-            digitalWrite(LED_B, LOW);
-            blink_count = 0;
-          }
-          blink = millis();
-        }
+
+        delay(1000);
+        digitalWrite(LED_B, HIGH);
+        delay(1000);
+        digitalWrite(LED_B, LOW);
+
       }
-  }
     }
-    digitalWrite(LED_B, LOW);
-    digitalWrite(LED_G, LOW);
-    digitalWrite(LED_R, HIGH);
   }
+  digitalWrite(LED_B, LOW);
+  digitalWrite(LED_G, LOW);
+  digitalWrite(LED_R, HIGH);
 }
 
 void forward_move(){
   
   get_angle();
-  if (angle>50){
-    analogWrite(wheel1_1,255);
-    digitalWrite(wheel1_2,LOW);
-    analogWrite(wheel2_2,122);
-    digitalWrite(wheel2_1,LOW);
+  if (angle>20){
+    Serial.println("angle>20");
+    analogWrite(wheel1_1,fast_speed);
+    analogWrite(wheel1_2,0);
+    analogWrite(wheel2_2,slow_speed);
+    analogWrite(wheel2_1,0);
   }
-  else if (angle<50) {
-    analogWrite(wheel1_1,122);
-    digitalWrite(wheel1_2,LOW);
-    analogWrite(wheel2_2,255);
-    digitalWrite(wheel2_1,LOW);
+  else if (angle<20) {
+    Serial.println("angle<20");
+    analogWrite(wheel1_1,slow_speed);
+    analogWrite(wheel1_2,0);
+    analogWrite(wheel2_2,fast_speed);
+    analogWrite(wheel2_1,0);
   }
+
 }
 
 void stop_move(){
-  digitalWrite(wheel1_1,LOW);
-  digitalWrite(wheel2_1,LOW);
-  digitalWrite(wheel1_2,LOW);
-  digitalWrite(wheel2_2,LOW);
+  analogWrite(wheel1_1,0);
+  analogWrite(wheel1_2,0);
+  analogWrite(wheel2_2,0);
+  analogWrite(wheel2_1,0);
 }
 
 void backward_move(){
-  digitalWrite(wheel1_1,LOW);
-  digitalWrite(wheel2_1,HIGH);
-  digitalWrite(wheel1_2,HIGH);
-  digitalWrite(wheel2_2,LOW);  
+  analogWrite(wheel1_1,0);
+  analogWrite(wheel2_1,255);
+  analogWrite(wheel1_2,255);
+  analogWrite(wheel2_2,0);  
 }
 
 void MPU_init(){
@@ -147,41 +134,54 @@ void get_angle() {
 
 void ARU_STOP(){
   digitalWrite(LED_G, LOW);
-  myservo.write(30);
+
+  digitalWrite(SERVO_PIN, HIGH);
+  delayMicroseconds(map(30, 0, 180, MIN_PULSE, MAX_PULSE));
+  digitalWrite(SERVO_PIN, LOW);
+
   digitalWrite(LED_R,HIGH);
   delay(300);
 
-  myservo.write(90);
+  digitalWrite(SERVO_PIN, HIGH);
+  delayMicroseconds(map(90, 0, 180, MIN_PULSE, MAX_PULSE));
+  digitalWrite(SERVO_PIN, LOW);
+
   digitalWrite(LED_R,LOW);
   delay(300);
 
-  myservo.write(150);
+  digitalWrite(SERVO_PIN, HIGH);
+  delayMicroseconds(map(150, 0, 180, MIN_PULSE, MAX_PULSE));
+  digitalWrite(SERVO_PIN, LOW);
+
   digitalWrite(LED_R,HIGH);
   delay(300);
 
-  myservo.write(90);
+  digitalWrite(SERVO_PIN, HIGH);
+  delayMicroseconds(map(90, 0, 180, MIN_PULSE, MAX_PULSE));
+  digitalWrite(SERVO_PIN, LOW);
+
   digitalWrite(LED_R,LOW);
   delay(300);
 
 }
 
 void init_ALL(){
-  Serial.begin(9600);
 
-  for (int i = 0; i<7; i++){ 
+  for (int i = 0; i<3; i++){ 
     pinMode(pins[i],OUTPUT); 
   }
+  
   pinMode(tirette, INPUT);
   pinMode(blue_switch, INPUT);
   pinMode(yellow_switch, INPUT);
   pinMode(ARU, INPUT);
-  myservo.attach(SERVO);
-  myservo.write(90);
   MPU_init();
 }
 
 void servo(){
-  myservo.write(90);
+  digitalWrite(SERVO_PIN, HIGH);
+  delayMicroseconds(map(90, 0, 180, MIN_PULSE, MAX_PULSE));
+  digitalWrite(SERVO_PIN, LOW);
 
   digitalWrite(LED_B, HIGH);
   delay(100);
@@ -190,9 +190,15 @@ void servo(){
   digitalWrite(LED_R, HIGH);
   delay(100);
 
-  myservo.write(30);
+  digitalWrite(SERVO_PIN, HIGH);
+  delayMicroseconds(map(30, 0, 180, MIN_PULSE, MAX_PULSE));
+  digitalWrite(SERVO_PIN, LOW);
+
   delay(300);
-  myservo.write(90);
+
+  digitalWrite(SERVO_PIN, HIGH);
+  delayMicroseconds(map(90, 0, 180, MIN_PULSE, MAX_PULSE));
+  digitalWrite(SERVO_PIN, LOW);
 
   digitalWrite(LED_B, LOW);
   delay(100);
@@ -201,7 +207,10 @@ void servo(){
   digitalWrite(LED_R, LOW);
   delay(100);
 
-  myservo.write(150);
+  digitalWrite(SERVO_PIN, HIGH);
+  delayMicroseconds(map(150, 0, 180, MIN_PULSE, MAX_PULSE));
+  digitalWrite(SERVO_PIN, LOW);
+
   delay(300);
 
 }
