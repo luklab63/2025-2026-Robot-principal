@@ -170,11 +170,9 @@ void init_ALL(){
   for (int i = 0; i<3; i++){ 
     pinMode(pins[i],OUTPUT); 
   }
-  
-  pinMode(tirette, INPUT);
-  pinMode(blue_switch, INPUT);
-  pinMode(yellow_switch, INPUT);
-  pinMode(ARU, INPUT);
+  for (int i = 3; i<8; i++){ 
+    pinMode(pins[i],INPUT); 
+  }
   MPU_init();
 }
 

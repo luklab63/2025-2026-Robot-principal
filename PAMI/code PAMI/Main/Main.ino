@@ -25,7 +25,7 @@ int angle = 0;
 #define MIN_PULSE 500   // en microsecondes (1 ms)
 #define MAX_PULSE 2500  // en microsecondes (2 ms)
 
-int pins[]={7,8,12};
+int pins[]={7,8,12,2,3,4,13};
 
 #define blue_switch 2
 #define yellow_switch 3
@@ -47,14 +47,14 @@ void setup() {
   ARU_ON();
   wait_before();
   Serial.println(time_go);
-  //wait_go();               //   /!\ ne pas oublier de uncomment quand pas besoin de test
+  wait_go();               //   /!\ ne pas oublier de uncomment quand pas besoin de test
 
   time_go = millis();
   Serial.println(time_go);
   angle = 0;
 
   
-  while (digitalRead(ARU)==LOW && millis()-time_go < 100000) {
+  while (digitalRead(ARU)==LOW && millis()-time_go < 5000) {
     if (digitalRead(yellow_switch)) {
       forward_move();
     }
