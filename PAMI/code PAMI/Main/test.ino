@@ -26,24 +26,23 @@ void wait_before(){
 }
 
 void wait_go(){
-  blink = millis();
-  while(millis()-time_go<100  ){
+  time_go = millis();
+  while(millis()-time_go <100  ){
     while(digitalRead(tirette) == LOW && millis()-time_go < time_wait){
-
       if (digitalRead(yellow_switch)) {
 
-        delay(1000);
+        delay(500);
         digitalWrite(LED_G, HIGH);
-        delay(1000);
+        delay(500);
         digitalWrite(LED_G, LOW);
         
       }
 
       else if (digitalRead(blue_switch)) {
 
-        delay(1000);
+        delay(500);
         digitalWrite(LED_B, HIGH);
-        delay(1000);
+        delay(500);
         digitalWrite(LED_B, LOW);
 
       }
@@ -54,18 +53,17 @@ void wait_go(){
   digitalWrite(LED_R, HIGH);
 }
 
+/*
 void forward_move(){
   
   get_angle();
   if (angle>20){
-    Serial.println("angle>20");
     analogWrite(wheel1_1,fast_speed);
     analogWrite(wheel1_2,0);
     analogWrite(wheel2_2,slow_speed);
     analogWrite(wheel2_1,0);
   }
   else if (angle<20) {
-    Serial.println("angle<20");
     analogWrite(wheel1_1,slow_speed);
     analogWrite(wheel1_2,0);
     analogWrite(wheel2_2,fast_speed);
@@ -73,7 +71,7 @@ void forward_move(){
   }
 
 }
-
+*/
 void stop_move(){
   analogWrite(wheel1_1,0);
   analogWrite(wheel1_2,0);
@@ -81,13 +79,20 @@ void stop_move(){
   analogWrite(wheel2_1,0);
 }
 
-void backward_move(){
-  analogWrite(wheel1_1,0);
+void spin_move(){
+  analogWrite(wheel1_1,255);
+  analogWrite(wheel1_2,0);
+  analogWrite(wheel2_2,0);
   analogWrite(wheel2_1,255);
+}
+
+void forward_move(){
+  analogWrite(wheel1_1,255);
+  analogWrite(wheel2_1,0);
   analogWrite(wheel1_2,255);
   analogWrite(wheel2_2,0);  
 }
-
+/*
 void MPU_init(){
   Wire.begin();
 
@@ -110,28 +115,29 @@ void get_gyro(){
 
   GyZ = Wire.read() << 8 | Wire.read();  // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
   //AcZ = Wire.read() << 8 | Wire.read();  // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
+  //GyX = Wire.read() << 8 | Wire.read();  // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
 
-  Serial.print(" | GyZ = "); Serial.println(GyZ);
+  //Serial.print(" | GyZ = "); Serial.println(GyZ);
   //Serial.print(" | AcZ = "); Serial.println(AcZ);
-  Serial.println();
+  //Serial.println();
 
 }
 
 void get_angle() {
   get_gyro();
-  if (GyZ<550 && GyZ>150){
+  if (GyZ<mpu_0){
     angle = angle;
   }
-  else if (GyZ>550) {
-    angle= angle + GyZ -550;
+  else if (GyZ>mpu_0) {
+    angle= angle + GyZ - mpu_0;
   }
-  else if (GyZ<150) {
-    angle =angle + GyZ -150;
+  else if (GyZ<mpu_0) {
+    angle =angle + GyZ -mpu_0;
   }
   Serial.println(angle);
   delay(100);
 }
-
+*/
 void ARU_STOP(){
   digitalWrite(LED_G, LOW);
 
@@ -173,9 +179,19 @@ void init_ALL(){
   for (int i = 3; i<8; i++){ 
     pinMode(pins[i],INPUT); 
   }
-  MPU_init();
+  //MPU_init();
 }
-
+/*
+void MPU_moyen(){
+  for (int i = 0; i<2000; i++){
+    get_gyro();
+    mpu_0 = mpu_0 + GyZ;
+    delay(1);
+  }
+  mpu_0 =mpu_0/2000;
+  
+}
+*/
 void servo(){
   digitalWrite(SERVO_PIN, HIGH);
   delayMicroseconds(map(90, 0, 180, MIN_PULSE, MAX_PULSE));

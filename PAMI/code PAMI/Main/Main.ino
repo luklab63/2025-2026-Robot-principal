@@ -5,9 +5,9 @@
 
 #include <Wire.h>
 
-#define MPU_addr 0x68  // I2C address of the MPU-6050
-int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
-int angle = 0;
+//#define MPU_addr 0x68  // I2C address of the MPU-6050
+//int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
+//int angle = 0;
 
 #define wheel1_1 6
 #define wheel1_2 5
@@ -32,11 +32,10 @@ int pins[]={7,8,12,2,3,4,13};
 #define tirette 4
 #define ARU 13
 
-#define time_wait 85000
+#define time_wait 2000  // mettre a 8500
 int tirette_etat = HIGH ;
 int time_go = 0;
-int blink = 0;
-int blink_count =0;
+//int mpu_0 =0;
 
 void setup() {
   
@@ -44,17 +43,20 @@ void setup() {
 
   init_ALL();
   
-  ARU_ON();
-  wait_before();
-  Serial.println(time_go);
-  wait_go();               //   /!\ ne pas oublier de uncomment quand pas besoin de test
+  //ARU_ON();
+  //wait_before();
+  //Serial.println(time_go);
+  //wait_go();               //   /!\ ne pas oublier de uncomment quand pas besoin de test
+  
+  //MPU_moyen();
+  //Serial.print(time_go);
 
+
+  //angle = 0;
   time_go = millis();
   Serial.println(time_go);
-  angle = 0;
-
   
-  while (digitalRead(ARU)==LOW && millis()-time_go < 5000) {
+  while (digitalRead(ARU)==LOW && millis()-time_go < 3500) {
     if (digitalRead(yellow_switch)) {
       forward_move();
     }
@@ -65,9 +67,5 @@ void setup() {
 }
 
 void loop() {
-  stop_move();
-  servo();
-  while (digitalRead(ARU)) {
-    ARU_STOP();
-  }
+
 }

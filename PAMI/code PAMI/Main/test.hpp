@@ -23,4 +23,6 @@ void ARU_STOP();
 
 void servo();
 
+void MPU_moyen();
+
 #endif // TEST_H
