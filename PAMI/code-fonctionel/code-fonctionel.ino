@@ -37,8 +37,8 @@ int INPUTS_PINS[] = {
 #define SERVO_MIN_PULSE 500   // en microsecondes (1 ms)
 #define SERVO_MAX_PULSE 2500  // en microsecondes (2 ms)
 
-#define TIME_WAIT 2000  // mettre a 85000
-#define TIME_FORWARD 4000
+#define TIME_WAIT 85000  // mettre a 85000
+#define TIME_FORWARD 2700
 
 void setup() {
   Serial.begin(9600);
@@ -59,6 +59,10 @@ void setup() {
   }
   digitalWrite(LED_R_PIN, LOW);
 
+  digitalWrite(SERVO_PIN, HIGH);
+  delayMicroseconds(map(30, 0, 90, SERVO_MIN_PULSE, SERVO_MAX_PULSE));
+  digitalWrite(SERVO_PIN, LOW);
+
   Serial.println("ARU_PIN off");
 
   while (digitalRead(TIRRETTE_PIN)) {
@@ -68,6 +72,7 @@ void setup() {
   }
   Serial.println("tirrette");
   delay(TIME_WAIT);
+   Serial.println("Initialisation finished");
 
   unsigned long time_go = millis();
   while (millis() - time_go < TIME_FORWARD && digitalRead(ARU_PIN) == LOW){
@@ -75,7 +80,7 @@ void setup() {
     Serial.println("moooooove");
   }
 
-  Serial.println("Initialisation finished");
+ 
 }
 
 void loop() {
@@ -83,8 +88,9 @@ void loop() {
   servo();
   Serial.println("Stoooooop");
   while (digitalRead(ARU_PIN)) {
-    spin_move();
+    digitalWrite(LED_R_PIN, HIGH);
   }
+
 }
 
 void stop_move(){
